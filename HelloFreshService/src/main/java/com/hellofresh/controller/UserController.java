@@ -1,5 +1,8 @@
 package com.hellofresh.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,19 +24,20 @@ public class UserController {
     @Qualifier("userService")
     private IUserService userService;
 	
-	@RequestMapping(value = "/login", method = {RequestMethod.POST, RequestMethod.GET}, consumes = "*/*", produces = "application/json")
+	@RequestMapping(value = "/login", method = {RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
-	public  Object userLogin(@RequestParam(value = "userName") String userName,
+	public  Map<String, String> userLogin(@RequestParam(value = "userName") String userName,
 			@RequestParam(value = "password") String password) {
 		
 		String password2 = userService.selectUserPassword(userName);
+		Map<String,String> map = new HashMap<String, String>();
 		JSONObject object = new JSONObject();
 		if(password2.equals(password)){
-		    object.put("login", "true");
+		    map.put("login", "true");
 		}else{
-			object.put("login", "false");
+			map.put("login", "false");
 		}
-			return object;	
+			return map;	
 	
 	}
 
